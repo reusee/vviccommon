@@ -45,7 +45,7 @@ func TidyTitle(in string) string {
 	return tidyWordsPattern.ReplaceAllString(in, "")
 }
 
-var logoImage image.Image
+var logoImage, WatermarkImage image.Image
 
 func init() {
 	var err error
@@ -53,6 +53,11 @@ func init() {
 	logoImage, _, err = image.Decode(bytes.NewReader(logoBytes))
 	if err != nil {
 		panic("decode logo image")
+	}
+	watermarkBytes, _ := watermarkPngBytes()
+	WatermarkImage, _, err = image.Decode(bytes.NewReader(watermarkBytes))
+	if err != nil {
+		panic("decode watermark image")
 	}
 }
 
