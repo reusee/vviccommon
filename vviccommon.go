@@ -32,11 +32,13 @@ var tidyWordsPattern = regexp.MustCompile(strings.Join([]string{
 	"新款",
 	`\(.+\)`,
 	`【.+】`,
+	`（.+）`,
 	"实拍",
 	"代发",
 	"模特",
 	"新品",
 	"官网",
+	"超模",
 }, "|"))
 
 func TidyTitle(in string) string {
