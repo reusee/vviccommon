@@ -71,7 +71,36 @@ func CompositeLogo(r io.Reader, w io.Writer) (err error) {
 	// composite
 	dst := image.NewRGBA(image.Rect(0, 0, 800, 800))
 	draw.Draw(dst, img.Bounds(), img, image.Pt(0, 0), draw.Over)
-	draw.Draw(dst, img.Bounds(), logoImage, image.Pt(-90, -1), draw.Over)
+	draw.Draw(dst, image.Rect(90, 0, logoImage.Bounds().Max.X+90, logoImage.Bounds().Max.Y),
+		logoImage, image.Pt(0, 0), draw.Over)
+	switch what {
+	case "jpeg":
+		ce(jpeg.Encode(w, dst, &jpeg.Options{
+			Quality: 90,
+		}), "encode image")
+	case "png":
+		ce(png.Encode(w, dst), "encode image")
+	case "gif":
+		ce(gif.Encode(w, dst, &gif.Options{
+			NumColors: 256,
+		}), "encode image")
+	default:
+		panic("image file not supported")
+	}
+	return
+}
+
+func CompositeWatermark(r io.Reader, w io.Writer) (err error) {
+	defer ct(&err)
+	img, what, err := image.Decode(r)
+	ce(err, "decode image")
+	dst := image.NewRGBA(img.Bounds())
+	imageRect := img.Bounds()
+	draw.Draw(dst, imageRect, img, image.Pt(0, 0), draw.Over)
+	watermarkRect := WatermarkImage.Bounds()
+	draw.Draw(dst, image.Rect(img.Bounds().Max.X-watermarkRect.Max.X, 0,
+		imageRect.Max.X, watermarkRect.Max.Y), WatermarkImage,
+		image.Pt(0, 0), draw.Over)
 	switch what {
 	case "jpeg":
 		ce(jpeg.Encode(w, dst, &jpeg.Options{
