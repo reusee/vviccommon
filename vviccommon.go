@@ -18,8 +18,9 @@ var tidyWordsPattern = regexp.MustCompile(strings.Join([]string{
 	"[0-9]+",
 	"#",
 	"[0-9]+年",
-	"现货",
 	"春秋季",
+	"真丝",
+	"-",
 	"春夏",
 	"夏装",
 	"春装",
@@ -39,6 +40,9 @@ var tidyWordsPattern = regexp.MustCompile(strings.Join([]string{
 	"新品",
 	"官网",
 	"超模",
+	"新品",
+	"官方图",
+	"现货",
 }, "|"))
 
 func TidyTitle(in string) string {
@@ -49,7 +53,7 @@ var logoImage, WatermarkImage image.Image
 
 func init() {
 	var err error
-	logoBytes, _ := logoPngBytes()
+	logoBytes, _ := logoNolightPngBytes()
 	logoImage, _, err = image.Decode(bytes.NewReader(logoBytes))
 	if err != nil {
 		panic("decode logo image")
