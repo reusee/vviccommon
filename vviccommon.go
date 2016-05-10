@@ -37,6 +37,7 @@ var tidyWordsPattern = regexp.MustCompile(strings.Join([]string{
 	"新款",
 	`\(.+\)`,
 	`\[.+\]`,
+	`桑蚕`,
 	`【.+】`,
 	`（.+）`,
 	"实拍",
